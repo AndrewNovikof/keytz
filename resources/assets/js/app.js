@@ -9,6 +9,14 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
+import Vuikit from 'vuikit'
+Vue.use(Vuikit);
+
+// loads the Icon plugin
+UIkit.use(Icons);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

@@ -1,70 +1,62 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
 
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('password.request') }}">
-                        {{ csrf_field() }}
-
-                        <input type="hidden" name="token" value="{{ $token }}">
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ $email or old('email') }}" required autofocus>
-
+    <div class="uk-container uk-margin-large">
+        <div class="uk-grid uk-grid-large uk-grid-divider uk-grid-stack" uk-grid="">
+            <div class="uk-width-1-4"></div>
+            <div class="uk-width-1-2">
+                <div class="uk-margin-medium" property="text">
+                    <div class="woocommerce uk-align-center">
+                        <h2>Reset Password</h2>
+                        <form class="login" method="post"
+                              action="{{ route('password.request') }}">
+                            {{ csrf_field() }}
+                            <div class="uk-margin">
+                                <label for="email">E-Mail Address <span class="required">*</span></label>
+                                <input type="text" class="input-text"
+                                       name="email" id="email" value="{{ old('email') }}">
                                 @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
+                                    <ul class="woocommerce-error">
+                                        <li><strong>Error:</strong> {{ $errors->first('email') }}</li>
+                                    </ul>
                                 @endif
                             </div>
-                        </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
+                            <div class="uk-margin">
+                                <label for="password">Password <span class="required">*</span></label>
+                                <input class="input-text" type="password"
+                                       name="password"
+                                       id="password" {{ $errors->has('password') ? ' has-error' : '' }}>
                                 @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
+                                    <ul class="woocommerce-error">
+                                        <li><strong>Error:</strong> {{ $errors->first('password') }}</li>
+                                    </ul>
                                 @endif
                             </div>
-                        </div>
 
-                        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-
+                            <div class="uk-margin">
+                                <label for="password-confirm">Confirm Password <span class="required">*</span></label>
+                                <input class="input-text" type="password"
+                                       name="password_confirmation"
+                                       id="password-confirm" {{ $errors->has('password_confirmation') ? ' has-error' : '' }}>
                                 @if ($errors->has('password_confirmation'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                    </span>
+                                    <ul class="woocommerce-error">
+                                        <li><strong>Error:</strong> {{ $errors->first('password_confirmation') }}</li>
+                                    </ul>
                                 @endif
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Reset Password
-                                </button>
+
+                            <div class="uk-margin">
+                                <input type="submit" class="button" name="login" value="Reset Password">
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
+
+            <div class="uk-width-1-4"></div>
         </div>
-    </div>
-</div>
+    </div>s
 @endsection

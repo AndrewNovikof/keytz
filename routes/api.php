@@ -13,6 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+use Illuminate\Routing\Router;
+
+/** @var Router $router */
+
+$router->get('/user', function (Request $request) {
+    return fractal($request->user(), new \App\Transformers\UserTransformer(), new \League\Fractal\Serializer\ArraySerializer());
 });
+
+$router->get('books', 'BookController@index');
+
+$router->apiResource('books', 'BookController')->middleware('auth:api');
+$router->apiResource('catalogs', 'CatalogController')->middleware('auth:api');

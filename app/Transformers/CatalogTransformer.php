@@ -44,12 +44,12 @@ class CatalogTransformer extends TransformerAbstract
      * Include books
      *
      * @param Catalog $catalog
-     * @return \League\Fractal\Resource\Item
+     * @return \League\Fractal\Resource\Collection
      */
     public function includeBooks(Catalog $catalog)
     {
         if ($books = $catalog->books) {
-            return $this->item($books, new BookTransformer());
+            return $this->collection($books, new BookTransformer());
         }
     }
 

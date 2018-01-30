@@ -34,6 +34,8 @@ use Illuminate\Support\Facades\Hash;
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User permission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User role($roles)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
  */
 class User extends Authenticatable
 {

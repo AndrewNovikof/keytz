@@ -39,7 +39,7 @@ class TestDataSeeder extends Seeder
         }
         foreach ($writers as $writer) {
             $writer->assignRole('writer');
-            for ($i = 1; $i < rand(2, 8); $i++) {
+            for ($i = 1; $i < rand(4, 8); $i++) {
                 $book = $writer->books()->create([
                     'name' => $this->faker->sentence($nbWords = rand(2, 8), $variableNbWords = true),
                     'text' => $this->faker->text(500)
@@ -52,6 +52,10 @@ class TestDataSeeder extends Seeder
             $catalogs[] = $reader->catalogs()->create([
                 'name' => $this->faker->sentence($nbWords = rand(1, 4), $variableNbWords = true),
             ]);
+        }
+
+        foreach ($catalogs as $catalog) {
+            $catalog->books()->sync(array_rand($books, rand(4, 10)));
         }
     }
 }

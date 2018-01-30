@@ -1,8 +1,5 @@
 <template>
     <div>
-        <p v-if="catalogs.length === 0">
-            Вы еще не создали ни одного приложения.
-        </p>
         <div class="uk-section-default uk-section uk-section-large">
             <div class="uk-container">
                 <div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid="">
@@ -25,7 +22,7 @@
     export default {
         data() {
             return {
-                catalogs: {
+                catalog: {
                     id: '',
                     name: '',
                     owner: ''
@@ -41,16 +38,19 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.getCatalogs();
+                console.log(this.$route);
+                if (this.$route.params.catalog_id) {
+                    this.getCatalog();
+                }
             },
 
             /**
              * Get all of the OAuth applications for the user.
              */
-            getCatalogs() {
+            getCatalog() {
                 axios.get('/api/catalogs/' . this.$route.params.catalog_id)
                     .then(response => {
-                        this.catalogs = response.data;
+                        this.catalog = response.data;
                     });
             }
         }

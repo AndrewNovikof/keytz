@@ -34,13 +34,13 @@
                                 <li>
                                     <router-link to="/books">
                                         <i class="fa fa-window-restore"></i> <span
-                                                class="nav-label">Книги</span>
+                                                class="nav-label">Books</span>
                                     </router-link>
                                 </li>
                                 <li>
                                     <router-link to="/catalogs">
                                         <i class="fa fa-window-restore"></i> <span
-                                                class="nav-label">Списки</span>
+                                                class="nav-label">Catalogs</span>
                                     </router-link>
                                 </li>
                                 <li class="dropdown">

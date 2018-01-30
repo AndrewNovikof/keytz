@@ -1,14 +1,12 @@
 <template>
     <div>
-        <article v-if="book.name.length > 0"
-                class="uk-article ">
+        <article class="uk-article ">
             <div class="uk-margin uk-container uk-container-small uk-text-center">
                 <h2 class="uk-article-title">
                     {{ book.name }}
                 </h2>
                 <p class="uk-article-meta">
-                    Written by <a href="https://demo.yootheme.com/themes/wordpress/2016/fuse/?author=1">
-                    {{ book.author.name }}</a> on {{ book.created.date }}</p>
+                    Written by <b>{{ book.author.name }}</b> on {{ book.created }}</p>
 
             </div>
             <div class="uk-container uk-container-small">
@@ -44,7 +42,10 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.getBook();
+                console.log(this.$route);
+                if (this.$route.params.book_id) {
+                    this.getBook();
+                }
             },
 
             /**

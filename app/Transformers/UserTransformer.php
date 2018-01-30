@@ -36,12 +36,12 @@ class UserTransformer extends TransformerAbstract
      * Include catalogs
      *
      * @param User $user
-     * @return \League\Fractal\Resource\Item
+     * @return \League\Fractal\Resource\Collection
      */
     public function includeCatalogs(User $user)
     {
         if ($catalogs = $user->catalogs) {
-            return $this->item($catalogs, new CatalogTransformer());
+            return $this->collection($catalogs, new CatalogTransformer());
         }
     }
 
@@ -49,12 +49,12 @@ class UserTransformer extends TransformerAbstract
      * Include books
      *
      * @param User $user
-     * @return \League\Fractal\Resource\Item
+     * @return \League\Fractal\Resource\Collection
      */
     public function includeBooks(User $user)
     {
         if ($books = $user->books) {
-            return $this->item($books, new BookTransformer());
+            return $this->collection($books, new BookTransformer());
         }
     }
 }

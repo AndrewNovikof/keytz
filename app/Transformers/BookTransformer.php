@@ -38,7 +38,7 @@ class BookTransformer extends TransformerAbstract
             'id' => $book->id,
             'name' => $book->name,
             'text' => $book->text,
-            'created' => $book->created_at
+            'created' => $book->created_at->formatLocalized('%A %d %B %Y')
         ];
     }
 
@@ -57,12 +57,12 @@ class BookTransformer extends TransformerAbstract
     /**
      * Include catalogs
      * @param Book $book
-     * @return \League\Fractal\Resource\Item
+     * @return \League\Fractal\Resource\Collection
      */
     public function includeCatalogs(Book $book)
     {
         if ($catalogs = $book->catalogs) {
-            return $this->item($catalogs, new CatalogTransformer());
+            return $this->collection($catalogs, new CatalogTransformer());
         }
     }
 }

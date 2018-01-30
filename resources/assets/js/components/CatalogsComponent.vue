@@ -1,23 +1,25 @@
 <template>
     <div>
-        <p v-if="catalogs.length === 0">
-            Вы еще не создали ни одного приложения.
-        </p>
-        <div class="uk-section-default uk-section uk-section-large">
-            <div class="uk-container">
-                <div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid="">
-                    <div class="uk-width-1-1@m uk-first-column">
-                        <h1 class="uk-margin-remove-top uk-text-left uk-heading-primary">
-                            Inspired, innovative. </h1>
-                        <div class="uk-width-xxlarge uk-text-left uk-text-lead">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
-                            ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo
-                            dolores et ea rebum
+        <ul uk-accordion="multiple: true" class="uk-accordion" v-if="catalogs.length > 0">
+            <li class="el-item" v-for="catalog in catalogs">
+                <h3 class="el-title uk-accordion-title">
+                    {{ catalog.name }}
+                </h3>
+
+                <div class="uk-accordion-content" aria-hidden="true" hidden="" >
+                    <div v-if="catalog.books.data.length > 0">
+                        <div class="uk-margin el-content" v-for="book in catalog.books.data">
+                            <ul class="uk-list">
+                                <li class="el-item">
+                                    {{ book.name }}
+                                </li>
+                            </ul>
                         </div>
                     </div>
+                    <button class="uk-button" @click="showCatalog(catalog)"> Open catalog</button>
                 </div>
-            </div>
-        </div>
+            </li>
+        </ul>
     </div>
 </template>
 
@@ -28,7 +30,12 @@
                 catalogs: {
                     id: '',
                     name: '',
-                    owner: ''
+                    owner: '',
+                    books: {
+                        id: '',
+                        name: '',
+                        author: ''
+                    }
                 }
             };
         },
@@ -48,11 +55,20 @@
              * Get all of the OAuth applications for the user.
              */
             getCatalogs() {
-                axios.get('/api/catalogs')
+                axios.get('/api/catalogs?includes=books')
                     .then(response => {
-                        this.catalogs = response.data;
+                        this.catalogs = response.data.data;
                     });
-            }
+            },
+
+            showCatalog(catalog) {
+                this.$router.push({
+                    name: 'edit_catalog',
+                    params: {
+                        catalog_id: catalog.id
+                    }
+                })
+            },
         }
     }
 </script>

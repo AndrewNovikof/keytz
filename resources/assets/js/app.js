@@ -38,7 +38,8 @@ router.afterEach(route => {
 });
 
 window.onload = function () {
-    let vm = new Vue({
-        router
-    }).$mount('#app');
+    new Vue({
+        el: '#app',
+        router : router
+    });
 };

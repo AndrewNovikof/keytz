@@ -19,9 +19,7 @@ use Illuminate\Routing\Router;
 
 $router->get('/user', function (Request $request) {
     return fractal($request->user(), new \App\Transformers\UserTransformer(), new \League\Fractal\Serializer\ArraySerializer());
-});
-
-$router->get('books', 'BookController@index');
+})->middleware('auth:api');
 
 $router->apiResource('books', 'BookController')->middleware('auth:api');
 $router->apiResource('catalogs', 'CatalogController')->middleware('auth:api');

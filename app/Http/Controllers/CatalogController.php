@@ -5,19 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Catalog;
 use App\Transformers\CatalogTransformer;
 use Illuminate\Http\Request;
-use Spatie\Fractalistic\ArraySerializer;
+use League\Fractal\Serializer\ArraySerializer;
 
 class CatalogController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        return response()->json(fractal(Catalog::paginate($request->get('per_page', 10)), new CatalogTransformer, new ArraySerializer)
-            ->parseIncludes($request->get('includes')));
+        return response()->json(fractal(
+            Catalog::paginate($request->get('per_page', 10)),
+            new CatalogTransformer,
+            new ArraySerializer
+        )->parseIncludes($request->get('includes')));
     }
 
     /**

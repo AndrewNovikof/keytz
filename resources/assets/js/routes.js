@@ -2,7 +2,8 @@ import {
     IndexComponent,
     BooksComponent,
     BookComponent,
-    CatalogsComponent
+    CatalogsComponent,
+    CatalogComponent
 } from './components'
 
 export default [
@@ -22,7 +23,8 @@ export default [
         }
     },
     {
-        path: '/books/create', component: BookComponent,
+        path: '/books/create',
+        component: BookComponent,
         name: 'create_book',
         meta: {
             title: 'Create Book'
@@ -42,6 +44,14 @@ export default [
         name: 'catalogs',
         meta: {
             title: 'Catalogs'
+        }
+    },
+    {
+        path: '/catalogs/:catalog_id/edit',
+        component: CatalogComponent,
+        name: 'edit_catalog',
+        meta: {
+            title: 'Edit Catalog'
         }
     },
 ];

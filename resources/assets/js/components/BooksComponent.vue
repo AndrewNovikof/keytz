@@ -1,12 +1,9 @@
 <template>
     <div>
-        <p v-if="books.length === 0">
-            Вы еще не создали ни одного приложения.
-        </p>
         <div class="uk-container" v-if="books.length > 0">
             <div class="el-item uk-panel uk-margin-large" v-for="book in books">
                 <h3 class="el-title uk-margin uk-margin-remove-adjacent uk-margin-remove-bottom">
-                    {{ book.name}}
+                    {{ book.name }}
                 </h3>
 
                 <div class="el-meta uk-margin uk-text-muted">
@@ -15,7 +12,7 @@
                 <div class="el-content uk-margin">
                     {{ book.text }}
                 </div>
-                <p class="uk-text-center uk-margin-medium" @click="edit(book)">
+                <p class="uk-text-center uk-margin-medium" @click="showBook(book)">
                     <a class="uk-button uk-button-text">Continue reading</a>
                 </p>
             </div>
@@ -57,7 +54,7 @@
                     });
             },
 
-            edit(book) {
+            showBook(book) {
                 this.$router.push({
                     name: 'edit_book',
                     params: {

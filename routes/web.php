@@ -11,10 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use Illuminate\Routing\Router;
 
-Auth::routes();
+/** @var Router $router */
 
-Route::get('/home', 'HomeController@index')->name('home');
+$router->auth();
+
+$router->get('/','HomeController@index')->name('home')->middleware('web');

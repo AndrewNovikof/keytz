@@ -1,47 +1,45 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
-
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    <form class="form-horizontal" method="POST" action="{{ route('password.email') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
-
+    <div class="uk-container uk-margin-large">
+        <div class="uk-grid uk-grid-large uk-grid-divider uk-grid-stack" uk-grid="">
+            <div class="uk-width-1-4"></div>
+            <div class="uk-width-1-2">
+                <div class="uk-margin-medium" property="text">
+                    <div class="woocommerce uk-align-center">
+                        <h2>Reset Password</h2>
+                        <form class="woocommerce-form woocommerce-form-login login" method="post"
+                              action="{{ route('password.email') }}">
+                            {{ csrf_field() }}
+                            <div class="uk-margin">
+                                <label for="email">E-Mail Address <span class="required">*</span></label>
+                                <input type="text" class="input-text"
+                                       name="email" id="email" value="{{ old('email') }}">
                                 @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
+                                    <ul class="woocommerce-error">
+                                        <li><strong>Error:</strong> {{ $errors->first('email') }}</li>
+                                    </ul>
                                 @endif
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Send Password Reset Link
-                                </button>
+
+                            <div class="uk-margin">
+                                <input type="submit" class="button" name="login" value="Send Password Reset Link">
                             </div>
-                        </div>
-                    </form>
+
+
+                            @if (session('status'))
+                                <div class="uk-alert-success" uk-alert>
+                                    {{ session('status') }}
+                                    <a class="uk-alert-close" uk-close></a>
+                                </div>
+                            @endif
+                        </form>
+                    </div>
                 </div>
             </div>
+
+            <dib class="uk-width-1-4"></dib>
         </div>
     </div>
-</div>
 @endsection

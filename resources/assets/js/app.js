@@ -11,11 +11,15 @@ window.Vue = require('vue');
 
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
-import Vuikit from 'vuikit'
-Vue.use(Vuikit);
+import Vuikit from 'vuikit';
+import VueRouter from 'vue-router'
+import Notifications from 'vue-notification'
 
-// loads the Icon plugin
+Vue.use(Vuikit);
+Vue.use(VueRouter);
+Vue.use(Notifications);
 UIkit.use(Icons);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -23,8 +27,18 @@ UIkit.use(Icons);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+import routes from './routes'
 
-const app = new Vue({
-    el: '#app'
+let router = new VueRouter({
+    routes
 });
+
+router.afterEach(route => {
+    document.title = route.meta.title;
+});
+
+window.onload = function () {
+    let vm = new Vue({
+        router
+    }).$mount('#app');
+};

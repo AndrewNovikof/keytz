@@ -1,6 +1,18 @@
 <template>
     <div>
         <div class="uk-container" v-if="books.length > 0">
+            <div class="uk-card uk-card-default  uk-card-body uk-card-small"
+                 uk-sticky="offset: 0" v-if="pagination.total_pages > 1">
+                <vk-pagination class="uk-margin uk-flex-center"
+                               :total="pagination.total"
+                               :limit="pagination.per_page"
+                               :page="pagination.current_page"
+                               :pagerange="pagination.limit"
+                               @change="setPage(arguments[0].page)">
+                </vk-pagination>
+            </div>
+
+
             <div class="el-item uk-panel uk-margin-large" v-for="book in books">
                 <h3 class="el-title uk-margin uk-margin-remove-adjacent uk-margin-remove-bottom">
                     {{ book.name }}
@@ -29,9 +41,21 @@
                     name: '',
                     text: '',
                     author: ''
+                },
+                pagination: {
+                    count: '',
+                    current_page: '',
+                    per_page: '',
+                    total: '',
+                    total_pages: ''
                 }
             };
         },
+
+        props: {
+            catalog_id: null
+        },
+
         mounted() {
             this.prepareComponent();
         },
@@ -41,16 +65,25 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.getBooks();
+                if (this.catalog_id > 0) {
+                    this.getCatalogBooks(this.catalog_id)
+                } else {
+                    this.getBooks(null);
+                }
             },
 
-            /**
-             * Get all of the OAuth applications for the user.
-             */
-            getBooks() {
-                axios.get('/api/books')
+            getBooks(params) {
+                axios.get('/api/books?' + params)
                     .then(response => {
                         this.books = response.data.data;
+                        this.pagination = response.data.meta.pagination;
+                    });
+            },
+
+            getCatalogBooks(catalog_id) {
+                axios.get('/api/catalogs/' + catalog_id + '?includes=books')
+                    .then(response => {
+                        this.books = response.data.books.data;
                     });
             },
 
@@ -62,6 +95,10 @@
                     }
                 })
             },
+
+            setPage(page_id) {
+                this.getBooks('page=' + page_id)
+            }
         }
     }
 </script>

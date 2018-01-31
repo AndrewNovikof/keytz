@@ -31,7 +31,7 @@ export default [
         }
     },
     {
-        path: '/books/:book_id/edit',
+        path: '/books/:book_id',
         component: BookComponent,
         name: 'edit_book',
         meta: {
@@ -47,11 +47,19 @@ export default [
         }
     },
     {
-        path: '/catalogs/:catalog_id/edit',
+        path: '/catalogs/:catalog_id',
         component: CatalogComponent,
         name: 'edit_catalog',
         meta: {
             title: 'Edit Catalog'
+        }
+    },
+    {
+        path: '/catalogs/create',
+        component: CatalogComponent,
+        name: 'create_catalog',
+        meta: {
+            title: 'Create Catalog'
         }
     },
 ];

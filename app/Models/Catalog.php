@@ -28,6 +28,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Catalog extends Model
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'is_public', 'user_id',
+    ];
+
+    /**
      * Relation to User
      *
      * @return BelongsTo
@@ -36,7 +45,6 @@ class Catalog extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 
     /**
      * Relation to Books

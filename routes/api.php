@@ -18,8 +18,14 @@ use Illuminate\Routing\Router;
 /** @var Router $router */
 
 $router->get('/user', function (Request $request) {
-    return fractal($request->user(), new \App\Transformers\UserTransformer(), new \League\Fractal\Serializer\ArraySerializer());
+    return fractal(
+        $request->user(),
+        new \App\Transformers\UserTransformer(),
+        new \League\Fractal\Serializer\ArraySerializer()
+    );
 })->middleware('auth:api');
+
+$router->get('books', 'BookController@index');
 
 $router->apiResource('books', 'BookController')->middleware('auth:api');
 $router->apiResource('catalogs', 'CatalogController')->middleware('auth:api');

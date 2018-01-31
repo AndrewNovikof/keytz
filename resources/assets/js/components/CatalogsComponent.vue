@@ -19,6 +19,17 @@
                     <button class="uk-button" @click="showCatalog(catalog)"> Open catalog</button>
                 </div>
             </li>
+
+            <div class="uk-card uk-card-default  uk-card-body uk-card-small" style="z-index: 980;"
+                 uk-sticky="offset: 0; bottom: #top" v-if="pagination.total_pages > 1">
+                <vk-pagination class="uk-margin uk-flex-center"
+                               :total="pagination.total"
+                               :limit="pagination.per_page"
+                               :page="pagination.current_page"
+                               :pagerange="pagination.limit"
+                               @change="setPage(arguments[0].page)">
+                </vk-pagination>
+            </div>
         </ul>
     </div>
 </template>
@@ -36,6 +47,13 @@
                         name: '',
                         author: ''
                     }
+                },
+                pagination: {
+                    count: '',
+                    current_page: '',
+                    per_page: '',
+                    total: '',
+                    total_pages: ''
                 }
             };
         },
@@ -48,16 +66,17 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.getCatalogs();
+                this.getCatalogs('includes=books');
             },
 
             /**
              * Get all of the OAuth applications for the user.
              */
-            getCatalogs() {
-                axios.get('/api/catalogs?includes=books')
+            getCatalogs(params) {
+                axios.get('/api/catalogs?' + params)
                     .then(response => {
                         this.catalogs = response.data.data;
+                        this.pagination = response.data.meta.pagination;
                     });
             },
 
@@ -69,6 +88,10 @@
                     }
                 })
             },
+
+            setPage(page_id) {
+                this.getCatalogs('includes=books&page=' + page_id)
+            }
         }
     }
 </script>

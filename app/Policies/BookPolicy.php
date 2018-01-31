@@ -25,7 +25,7 @@ class BookPolicy
     }
 
     /**
-     * @param User   $user
+     * @param User $user
      * @param string $ability
      * @param Book $model
      *
@@ -33,7 +33,7 @@ class BookPolicy
      */
     public function before(User $user, $ability, Book $model)
     {
-        if ($user->hasRole('admin')) {
+        if ($user->hasRole('admin') || $model->user_id === $user->id) {
             return true;
         }
     }
@@ -41,8 +41,8 @@ class BookPolicy
     /**
      * Determine whether the user can view the book.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Book  $book
+     * @param  \App\Models\User $user
+     * @param  \App\Models\Book $book
      * @return mixed
      */
     public function view(User $user, Book $book)
@@ -57,7 +57,7 @@ class BookPolicy
     /**
      * Determine whether the user can display the role.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\User $user
      * @param  Book $book
      * @return mixed
      */
@@ -73,7 +73,7 @@ class BookPolicy
     /**
      * Determine whether the user can create books.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\User $user
      * @return mixed
      */
     public function create(User $user)
@@ -88,8 +88,8 @@ class BookPolicy
     /**
      * Determine whether the user can update the book.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Book  $book
+     * @param  \App\Models\User $user
+     * @param  \App\Models\Book $book
      * @return mixed
      */
     public function update(User $user, Book $book)
@@ -104,8 +104,8 @@ class BookPolicy
     /**
      * Determine whether the user can delete the book.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Book  $book
+     * @param  \App\Models\User $user
+     * @param  \App\Models\Book $book
      * @return mixed
      */
     public function delete(User $user, Book $book)

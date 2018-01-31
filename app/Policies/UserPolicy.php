@@ -32,7 +32,7 @@ class UserPolicy
      */
     public function before(User $user, $ability, User $model)
     {
-        if ($user->hasRole('admin')) {
+        if ($user->hasRole('admin') || $model->id === $user->id) {
             return true;
         }
     }

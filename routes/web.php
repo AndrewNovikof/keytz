@@ -18,3 +18,6 @@ use Illuminate\Routing\Router;
 $router->auth();
 
 $router->get('/','HomeController@index')->name('home')->middleware('web');
+
+$router->get('index', 'CatalogController@index');
+$router->get('show/{catalog}', 'CatalogController@show');

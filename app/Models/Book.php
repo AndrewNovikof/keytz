@@ -28,6 +28,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Book extends Model
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'text', 'user_id',
+    ];
+
+    /**
      * Relation to User
      *
      * @return BelongsTo

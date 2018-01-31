@@ -44,7 +44,7 @@ class TestDataSeeder extends Seeder
                     'name' => $this->faker->sentence($nbWords = rand(2, 8), $variableNbWords = true),
                     'text' => $this->faker->text(500)
                 ]);
-                $books[] = $book->id;
+                $books[$book->id] = $book->id;
             }
         }
         foreach ($readers as $reader) {

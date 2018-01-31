@@ -33,6 +33,7 @@ class RolesSeeder extends Seeder
 
         $create_users_permission = Permission::firstOrCreate(['name' => 'create users']);
         $update_users_permission = Permission::firstOrCreate(['name' => 'update users',]);
+        $edit_users_permission = Permission::firstOrCreate(['name' => 'edit users',]);
         $view_users_permission = Permission::firstOrCreate(['name' => 'view users']);
         $display_users_permission = Permission::firstOrCreate(['name' => 'display users']);
         $delete_users_permission = Permission::firstOrCreate(['name' => 'delete users']);
@@ -76,6 +77,7 @@ class RolesSeeder extends Seeder
 
             $create_users_permission->name,
             $update_users_permission->name,
+            $edit_users_permission->name,
             $view_users_permission->name,
             $display_users_permission->name,
             $delete_users_permission->name,

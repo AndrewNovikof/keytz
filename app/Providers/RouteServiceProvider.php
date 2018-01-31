@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Book;
+use App\Models\Catalog;
+use App\Models\User;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -19,6 +23,7 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Define your route model bindings, pattern filters, etc.
      *
+     * @param Router $router
      * @return void
      */
     public function boot()
@@ -26,6 +31,11 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+
+        Route::model('user', User::class);
+        Route::model('book', Book::class);
+        Route::model('catalog', Catalog::class);
+        Route::model('show', Catalog::class);
     }
 
     /**

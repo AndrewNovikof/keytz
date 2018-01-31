@@ -33,7 +33,7 @@ class CatalogPolicy
      */
     public function before(User $user, $ability, Catalog $model)
     {
-        if ($user->hasRole('admin')) {
+        if ($user->hasRole('admin') || $model->user_id === $user->id) {
             return true;
         }
     }
@@ -55,7 +55,7 @@ class CatalogPolicy
     }
 
     /**
-     * Determine whether the user can display the role.
+     * Determine whether the user can display the catalog.
      *
      * @param  \App\Models\User  $user
      * @param  Catalog  $catalog

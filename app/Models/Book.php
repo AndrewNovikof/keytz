@@ -41,7 +41,7 @@ class Book extends Model
      *
      * @return BelongsTo
      */
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -51,8 +51,38 @@ class Book extends Model
      *
      * @return BelongsToMany
      */
-    public function catalogs() : BelongsToMany
+    public function catalogs(): BelongsToMany
     {
         return $this->belongsToMany(Catalog::class);
+    }
+
+    /**
+     * Search book by name like $string
+     *
+     * @param $query
+     * @param $string
+     * @return mixed
+     */
+    public function scopeSearch($query, $string = null)
+    {
+        if (!$string) {
+            return $query;
+        }
+        return $query->where('name', 'like', "%$string%");
+    }
+
+    /**
+     * @param $query
+     * @param null $catalog_id
+     * @return mixed
+     */
+    public function scopeExcludedCatalog($query, $catalog_id = null)
+    {
+        if (!$catalog_id) {
+            return $query;
+        }
+        return $query->whereHas('catalogs', function ($query) use ($catalog_id) {
+            $query->whereNotIn('id', [$catalog_id]);
+        });
     }
 }

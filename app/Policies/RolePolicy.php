@@ -17,11 +17,11 @@ class RolePolicy
 
     /**
      * RolePolicy constructor.
-     * @param User $user
+     * @param Role $model
      */
-    public function __construct(User $user)
+    public function __construct(Role $model)
     {
-        $this->table = $user->getTable();
+        $this->table = $model->getTable();
     }
 
     /**

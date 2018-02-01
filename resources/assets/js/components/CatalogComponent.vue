@@ -27,9 +27,13 @@
                             Delete
                         </button>
                     </div>
-                    <div class="uk-margin uk-container uk-container-small">
+                    <div class="uk-margin uk-container uk-container-small" v-if="can_update === true">
                         <label for="books">Select books</label>
-                        <multiselect v-model="catalog.books.data" id="books" label="name" track-by="id" placeholder="Type to search" open-direction="bottom"
+                        <multiselect v-model="catalog.books.data" id="books"
+                                     label="name"
+                                     track-by="id"
+                                     placeholder="Type to search"
+                                     open-direction="bottom"
                                      :options="books"
                                      :multiple="true"
                                      :searchable="true"
@@ -37,12 +41,15 @@
                                      :internal-search="false"
                                      :clear-on-select="false"
                                      :close-on-select="false"
-                                     :limit="3"
+                                     :limit="20"
+                                     :value="Object"
                                      :limit-text="limitText"
                                      :max-height="600"
                                      :show-no-results="false"
                                      :hide-selected="true"
-                                     @search-change="findBooks">
+                                     @search-change="findBooks"
+                                     @select="selectBook"
+                                     @remove="removeBook">
                         </multiselect>
                     </div>
                 </div>
@@ -96,8 +103,8 @@
                 can_create: false,
                 can_update: false,
                 can_delete: false,
-                books: {
-                    data: {
+                books: [
+                    {
                         id: '',
                         name: '',
                         text: '',
@@ -105,8 +112,8 @@
                             name: ''
                         },
                         created: ''
-                    },
-                },
+                    }
+                ],
                 isLoading: false
             };
         },
@@ -204,16 +211,15 @@
                             text: 'Catalog was created',
                             type: 'success'
                         });
-                        this.catalog = response.data;
-                        this.getAccessToUpdate();
-                        this.getAccessToDelete();
-                        this.can_create = false;
+                        console.log(response);
                         this.$router.push({
                             name: 'edit_catalog',
                             params: {
                                 catalog_id: response.data.id
                             }
-                        })
+                        });
+                        this.can_create = false;
+                        this.prepareComponent();
                     })
                     .catch(error => {
                         this.passError(error)
@@ -238,6 +244,7 @@
             },
 
             passError(error) {
+                console.log(error);
                 if (typeof error.response.data === 'object') {
                     if (error.response.status === 403) {
                         this.$notify({
@@ -265,23 +272,57 @@
             },
 
             limitText() {
-                return `and ${count} other books`
+                return `and ${count} more`
             },
 
-            clearAll () {
+            clearAll() {
                 this.catalog.books = []
             },
 
-            findBooks (query) {
-                this.isLoading = true;
-                axios.get('/api/books?', {
-                    params: {
-                        'find': query
+            findBooks(query) {
+                if (typeof query !== 'undefined') {
+                    if (query.length > 3) {
+                        this.isLoading = true;
+                        axios.get('/api/books?', {
+                            params: {
+                                'search': query,
+                                'excluded_catalog': this.catalog.id
+                            }
+                        }).then(response => {
+                            this.books = response.data.data;
+                            this.isLoading = false
+                        }).catch(error => {
+                            this.passError(error)
+                        });
                     }
-                })
+                }
+            },
+
+            selectBook(book) {
+                axios.post('/api/catalogs/' + this.catalog.id + '/attach_book/' + book.id)
                     .then(response => {
-                        this.books = response.data.data;
-                        this.isLoading = false
+                        this.$notify({
+                            title: 'Good!',
+                            text: 'Book was added to catalog',
+                            type: 'success'
+                        });
+                    })
+                    .catch(error => {
+                        this.passError(error)
+                    });
+            },
+
+            removeBook(book) {
+                axios.post('/api/catalogs/' + this.catalog.id + '/detach_book/' + book.id)
+                    .then(response => {
+                        this.$notify({
+                            title: 'Good!',
+                            text: 'Book was deleted from catalog',
+                            type: 'success'
+                        });
+                    })
+                    .catch(error => {
+                        this.passError(error)
                     });
             },
         }

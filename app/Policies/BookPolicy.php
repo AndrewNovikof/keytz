@@ -17,11 +17,11 @@ class BookPolicy
 
     /**
      * BookPolicy constructor.
-     * @param User $user
+     * @param Book $model
      */
-    public function __construct(User $user)
+    public function __construct(Book $model)
     {
-        $this->table = $user->getTable();
+        $this->table = $model->getTable();
     }
 
     /**

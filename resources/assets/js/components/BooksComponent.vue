@@ -29,7 +29,7 @@
                 </p>
             </div>
         </div>
-        <div class="uk-position-large uk-position-bottom-right uk-position-absolute uk-position-fixed"><a @click="showBook()" uk-marker></a></div>
+        <div class="uk-position-large uk-position-bottom-right uk-position-absolute uk-position-fixed" v-if="this.can_create === true"><a @click="showBook()" uk-marker></a></div>
     </div>
 </template>
 
@@ -49,7 +49,8 @@
                     per_page: '',
                     total: '',
                     total_pages: ''
-                }
+                },
+                can_create: false
             };
         },
 
@@ -97,9 +98,27 @@
                 })
             },
 
+            createBook(){
+                this.$router.push({
+                    name: 'create_book'
+                })
+            },
+
             setPage(page_id) {
                 this.getBooks('page=' + page_id)
-            }
+            },
+
+            getAccessToCreate() {
+                axios.get('/api/users/can', {
+                    params: {
+                        action: 'create books'
+                    }
+                }).then(response => {
+                    this.can_create = response.data.data;
+                }).catch(error => {
+                    this.passError(error)
+                });
+            },
         }
     }
 </script>

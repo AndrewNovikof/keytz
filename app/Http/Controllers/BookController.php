@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CanRequest;
 use App\Http\Requests\BookRequest;
+use App\Http\Requests\CanRequest;
+use App\Http\Requests\BooksRequest;
 use App\Models\Book;
 use App\Transformers\BookTransformer;
 use Illuminate\Http\Request;
@@ -14,18 +15,20 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param BooksRequest $request
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(Request $request)
+    public function index(BooksRequest $request)
     {
         $this->authorize('view books');
         return response()->json(fractal(
-            Book::paginate($request->get('per_page', 10)),
+            Book::search($request->search)
+                ->excludedCatalog($request->excluded_catalog)
+                ->paginate($request->get('per_page', 10)),
             new BookTransformer,
             new ArraySerializer
-        )->parseIncludes($request->get('includes')));
+        )->parseIncludes($request->includes));
     }
 
     /**

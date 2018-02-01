@@ -28,6 +28,8 @@ $router->get('books', 'BookController@index');
 
 $router->group(['middleware' => ['auth:api'], 'prefix' => 'catalogs'], function (Router $router) {
     $router->get('{catalog}/can', 'CatalogController@can');
+    $router->post('{catalog}/attach_book/{book}', 'CatalogController@attachBook');
+    $router->post('{catalog}/detach_book/{book}', 'CatalogController@detachBook');
 });
 $router->apiResource('catalogs', 'CatalogController')->middleware('auth:api');
 

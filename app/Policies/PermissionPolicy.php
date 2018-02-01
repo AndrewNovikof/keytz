@@ -17,11 +17,11 @@ class PermissionPolicy
 
     /**
      * PermissionPolicy constructor.
-     * @param User $user
+     * @param Permission $model
      */
-    public function __construct(User $user)
+    public function __construct(Permission $model)
     {
-        $this->table = $user->getTable();
+        $this->table = $model->getTable();
     }
 
     /**

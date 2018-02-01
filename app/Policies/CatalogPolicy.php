@@ -17,11 +17,11 @@ class CatalogPolicy
 
     /**
      * CatalogPolicy constructor.
-     * @param User $user
+     * @param Catalog $model
      */
-    public function __construct(User $user)
+    public function __construct(Catalog $model)
     {
-        $this->table = $user->getTable();
+        $this->table = $model->getTable();
     }
 
     /**
@@ -33,7 +33,7 @@ class CatalogPolicy
      */
     public function before(User $user, $ability, Catalog $model)
     {
-        if ($user->hasRole('admin') || $model->user_id === $user->id) {
+        if ($user->hasRole('admin')) {
             return true;
         }
     }
@@ -111,6 +111,38 @@ class CatalogPolicy
     public function delete(User $user, Catalog $catalog)
     {
         if ($user->id !== $catalog->user_id) {
+            return false;
+        };
+
+        return true;
+    }
+
+    /**
+     * Determine whether the user can attach book to the catalog.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Catalog  $catalog
+     * @return mixed
+     */
+    public function attachBook(User $user, Catalog $catalog)
+    {
+        if ($user->id !== $catalog->user_id && !$catalog->is_public) {
+            return false;
+        };
+
+        return true;
+    }
+
+    /**
+     * Determine whether the user can detach book from the catalog.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Catalog  $catalog
+     * @return mixed
+     */
+    public function detachBook(User $user, Catalog $catalog)
+    {
+        if ($user->id !== $catalog->user_id && !$catalog->is_public) {
             return false;
         };
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CanRequest;
 use App\Http\Requests\CatalogRequest;
+use App\Models\Book;
 use App\Models\Catalog;
 use App\Transformers\CatalogTransformer;
 use Illuminate\Http\Request;
@@ -55,7 +56,7 @@ class CatalogController extends Controller
      */
     public function show(Catalog $catalog, Request $request)
     {
-        $this->authorize('display', $catalog);
+        $this->authorize('view', $catalog);
         return response()->json(fractal(
             $catalog,
             new CatalogTransformer,
@@ -103,5 +104,29 @@ class CatalogController extends Controller
         return response()->json([
             'data' => auth()->user()->can($request->action, $catalog)
         ]);
+    }
+
+    /**
+     * @param Catalog $catalog
+     * @param Book $book
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function attachBook(Catalog $catalog, Book $book)
+    {
+        $this->authorize('attachBook', $catalog);
+        $catalog->books()->attach($book->id);
+        return response()->json('', 204);
+    }
+
+    /**
+     * @param Catalog $catalog
+     * @param Book $book
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function detachBook(Catalog $catalog, Book $book)
+    {
+        $this->authorize('detachBook', $catalog);
+        $catalog->books()->detach($book->id);
+        return response()->json('', 204);
     }
 }

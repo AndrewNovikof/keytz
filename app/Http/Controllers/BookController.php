@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreBookRequest;
-use App\Http\Requests\UpdateBookRequest;
+use App\Http\Requests\CanRequest;
+use App\Http\Requests\BookRequest;
 use App\Models\Book;
 use App\Transformers\BookTransformer;
 use Illuminate\Http\Request;
@@ -31,15 +31,15 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreBookRequest $request
+     * @param  BookRequest $request
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(StoreBookRequest $request)
+    public function store(BookRequest $request)
     {
         $this->authorize('create books');
         return response()->json(fractal(
-            Book::create($request->all()),
+            auth()->user()->books()->create($request->all()),
             new BookTransformer,
             new ArraySerializer
         )->parseIncludes($request->get('includes')), 201);
@@ -66,19 +66,15 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateBookRequest $request
+     * @param  BookRequest $request
      * @param  \App\Models\Book $book
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(UpdateBookRequest $request, Book $book)
+    public function update(BookRequest $request, Book $book)
     {
         $this->authorize('update', $book);
-        return response()->json(fractal(
-            $book->update($request->all()),
-            new BookTransformer,
-            new ArraySerializer
-        )->parseIncludes($request->get('includes')));
+        return response()->json($book->update($request->all()), 201);
     }
 
     /**
@@ -92,7 +88,20 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         $this->authorize('delete', $book);
+        $book->catalogs()->detach();
         $book->delete();
         return response()->json('', 204);
+    }
+
+    /**
+     * @param CanRequest $request
+     * @param Book $book
+     * @return mixed
+     */
+    public function can(CanRequest $request, Book $book)
+    {
+        return response()->json([
+            'data' => auth()->user()->can($request->action, $book)
+        ]);
     }
 }

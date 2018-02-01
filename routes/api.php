@@ -17,15 +17,21 @@ use Illuminate\Routing\Router;
 
 /** @var Router $router */
 
-$router->get('/user', function (Request $request) {
-    return fractal(
-        $request->user(),
-        new \App\Transformers\UserTransformer(),
-        new \League\Fractal\Serializer\ArraySerializer()
-    );
-})->middleware('auth:api');
+$router->group(['middleware' => ['auth:api'], 'prefix' => 'users'], function (Router $router) {
+    $router->get('me', 'UserController@me');
+    $router->get('can', 'UserController@can');
+    $router->get('role', 'UserController@role');
+});
 
 $router->get('books', 'BookController@index');
 
-$router->apiResource('books', 'BookController')->middleware('auth:api');
+
+$router->group(['middleware' => ['auth:api'], 'prefix' => 'catalogs'], function (Router $router) {
+    $router->get('{catalog}/can', 'CatalogController@can');
+});
 $router->apiResource('catalogs', 'CatalogController')->middleware('auth:api');
+
+$router->group(['middleware' => ['auth:api'], 'prefix' => 'books'], function (Router $router) {
+    $router->get('{book}/can', 'BookController@can');
+});
+$router->apiResource('books', 'BookController')->middleware('auth:api');

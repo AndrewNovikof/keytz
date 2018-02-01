@@ -4,7 +4,13 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCatalogRequest extends FormRequest
+/**
+ * Class UserCanRequest
+ * @package App\Http\Requests
+ *
+ * @property string $action
+ */
+class CanRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +19,7 @@ class StoreCatalogRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +30,7 @@ class StoreCatalogRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'action' => 'required',
         ];
     }
 }

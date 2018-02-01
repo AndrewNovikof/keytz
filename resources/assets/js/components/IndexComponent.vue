@@ -29,6 +29,9 @@
             return {
                 user: {
                     name: '',
+                    roles: {
+
+                    }
                 }
             };
         },
@@ -49,7 +52,7 @@
              * Get all of the OAuth applications for the user.
              */
             getUserInfo() {
-                axios.get('/api/user')
+                axios.get('/api/users/me?includes=roles')
                     .then(response => {
                         this.user = response.data;
                     });

@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCatalogRequest;
-use App\Http\Requests\UpdateCatalogRequest;
-use App\Models\Book;
+use App\Http\Requests\CanRequest;
+use App\Http\Requests\CatalogRequest;
 use App\Models\Catalog;
 use App\Transformers\CatalogTransformer;
 use Illuminate\Http\Request;
@@ -32,15 +31,15 @@ class CatalogController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreCatalogRequest $request
+     * @param  CatalogRequest $request
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(StoreCatalogRequest $request)
+    public function store(CatalogRequest $request)
     {
         $this->authorize('create catalogs');
         return response()->json(fractal(
-            Catalog::create($request->all()),
+            auth()->user()->catalogs()->create($request->all()),
             new CatalogTransformer,
             new ArraySerializer
         )->parseIncludes($request->get('includes')), 201);
@@ -67,19 +66,15 @@ class CatalogController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateCatalogRequest $request
+     * @param  CatalogRequest $request
      * @param  \App\Models\Catalog $catalog
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(UpdateCatalogRequest $request, Catalog $catalog)
+    public function update(CatalogRequest $request, Catalog $catalog)
     {
         $this->authorize('update', $catalog);
-        return response()->json(fractal(
-            $catalog->update($request->all()),
-            new CatalogTransformer,
-            new ArraySerializer
-        )->parseIncludes($request->get('includes')));
+        return response()->json($catalog->update($request->all()), 201);
     }
 
     /**
@@ -93,7 +88,20 @@ class CatalogController extends Controller
     public function destroy(Catalog $catalog)
     {
         $this->authorize('delete', $catalog);
+        $catalog->books()->detach();
         $catalog->delete();
         return response()->json('', 204);
+    }
+
+    /**
+     * @param CanRequest $request
+     * @param Catalog $catalog
+     * @return mixed
+     */
+    public function can(CanRequest $request, Catalog $catalog)
+    {
+        return response()->json([
+            'data' => auth()->user()->can($request->action, $catalog)
+        ]);
     }
 }

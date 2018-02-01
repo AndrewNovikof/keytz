@@ -37,6 +37,7 @@ class CatalogTransformer extends TransformerAbstract
         return [
             'id' => $catalog->id,
             'name' => $catalog->name,
+            'is_public' => $catalog->is_public
         ];
     }
 

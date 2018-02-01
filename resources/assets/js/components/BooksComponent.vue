@@ -24,11 +24,12 @@
                 <div class="el-content uk-margin">
                     {{ book.text }}
                 </div>
-                <p class="uk-text-center uk-margin-medium" @click="showBook(book)">
+                <p class="uk-text-center uk-margin-medium" @click="showBook(book.id)">
                     <a class="uk-button uk-button-text">Continue reading</a>
                 </p>
             </div>
         </div>
+        <div class="uk-position-large uk-position-bottom-right uk-position-absolute uk-position-fixed"><a @click="showBook()" uk-marker></a></div>
     </div>
 </template>
 
@@ -87,11 +88,11 @@
                     });
             },
 
-            showBook(book) {
+            showBook(id) {
                 this.$router.push({
                     name: 'edit_book',
                     params: {
-                        book_id: book.id
+                        book_id: id
                     }
                 })
             },

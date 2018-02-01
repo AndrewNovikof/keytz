@@ -16,7 +16,7 @@
                             </ul>
                         </div>
                     </div>
-                    <button class="uk-button" @click="showCatalog(catalog)"> Open catalog</button>
+                    <button class="uk-button uk-button-default" @click="showCatalog(catalog.id)"> Open catalog</button>
                 </div>
             </li>
 
@@ -31,6 +31,8 @@
                 </vk-pagination>
             </div>
         </ul>
+
+        <div class="uk-position-large uk-position-bottom-right uk-position-absolute uk-position-fixed" v-if="this.can_create === true"><a @click="createCatalog()" uk-marker></a></div>
     </div>
 </template>
 
@@ -54,7 +56,8 @@
                     per_page: '',
                     total: '',
                     total_pages: ''
-                }
+                },
+                can_create: false
             };
         },
         mounted() {
@@ -67,6 +70,7 @@
              */
             prepareComponent() {
                 this.getCatalogs('includes=books');
+                this.getAccessToCreate()
             },
 
             /**
@@ -80,18 +84,36 @@
                     });
             },
 
-            showCatalog(catalog) {
+            showCatalog(id) {
                 this.$router.push({
                     name: 'edit_catalog',
                     params: {
-                        catalog_id: catalog.id
+                        catalog_id: id
                     }
+                })
+            },
+
+            createCatalog(){
+                this.$router.push({
+                    name: 'create_catalog'
                 })
             },
 
             setPage(page_id) {
                 this.getCatalogs('includes=books&page=' + page_id)
-            }
+            },
+
+            getAccessToCreate() {
+                axios.get('/api/users/can', {
+                    params: {
+                        action: 'create catalogs'
+                    }
+                }).then(response => {
+                    this.can_create = response.data.data;
+                }).catch(error => {
+                    this.passError(error)
+                });
+            },
         }
     }
 </script>

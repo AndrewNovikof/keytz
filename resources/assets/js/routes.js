@@ -47,14 +47,6 @@ export default [
         }
     },
     {
-        path: '/catalogs/:catalog_id',
-        component: CatalogComponent,
-        name: 'edit_catalog',
-        meta: {
-            title: 'Edit Catalog'
-        }
-    },
-    {
         path: '/catalogs/create',
         component: CatalogComponent,
         name: 'create_catalog',
@@ -62,4 +54,12 @@ export default [
             title: 'Create Catalog'
         }
     },
+    {
+        path: '/catalogs/:catalog_id',
+        component: CatalogComponent,
+        name: 'edit_catalog',
+        meta: {
+            title: 'Edit Catalog'
+        }
+    }
 ];

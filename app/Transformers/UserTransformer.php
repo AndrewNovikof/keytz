@@ -14,7 +14,8 @@ class UserTransformer extends TransformerAbstract
      */
     protected $availableIncludes = [
         'books',
-        'catalogs'
+        'catalogs',
+        'roles'
     ];
 
     /**
@@ -55,6 +56,19 @@ class UserTransformer extends TransformerAbstract
     {
         if ($books = $user->books) {
             return $this->collection($books, new BookTransformer());
+        }
+    }
+
+    /**
+     * Include roles
+     *
+     * @param User $user
+     * @return \League\Fractal\Resource\Collection
+     */
+    public function includeRoles(User $user)
+    {
+        if ($roles = $user->roles) {
+            return $this->collection($roles, new RoleTransformer());
         }
     }
 }

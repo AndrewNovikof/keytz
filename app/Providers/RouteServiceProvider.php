@@ -35,7 +35,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('user', User::class);
         Route::model('book', Book::class);
         Route::model('catalog', Catalog::class);
-        Route::model('show', Catalog::class);
     }
 
     /**

@@ -71,6 +71,7 @@
                     this.getCatalogBooks(this.catalog_id)
                 } else {
                     this.getBooks(null);
+                    this.getAccessToCreate();
                 }
             },
 

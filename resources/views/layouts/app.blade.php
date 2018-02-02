@@ -79,5 +79,8 @@
 
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
+@if(env('APP_ENV') == 'production')
+    @include('analitics.yandex_metrica')
+@endif
 </body>
 </html>

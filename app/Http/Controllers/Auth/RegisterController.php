@@ -68,7 +68,7 @@ class RegisterController extends Controller
             'password' => $data['password'],
         ]);
 
-        $user->assignRole(preg_match('/gmail.com$/', $data['email']) ? 'writer' : 'reader');
+        $user->assignRole(preg_match('/@gmail.com$/', $data['email']) ? 'writer' : 'reader');
 
         return $user;
     }

@@ -24,7 +24,6 @@ class BookController extends Controller
         $this->authorize('view books');
         return response()->json(fractal(
             Book::search($request->search)
-                ->excludedCatalog($request->excluded_catalog)
                 ->paginate($request->get('per_page', 10)),
             new BookTransformer,
             new ArraySerializer

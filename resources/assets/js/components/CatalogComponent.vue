@@ -285,8 +285,7 @@
                         this.isLoading = true;
                         axios.get('/api/books?', {
                             params: {
-                                'search': query,
-                                'excluded_catalog': this.catalog.id
+                                'search': query
                             }
                         }).then(response => {
                             this.books = response.data.data;
@@ -324,6 +323,15 @@
                     .catch(error => {
                         this.passError(error)
                     });
+            },
+
+            showBook(id) {
+                this.$router.push({
+                    name: 'edit_book',
+                    params: {
+                        book_id: id
+                    }
+                })
             },
         }
     }

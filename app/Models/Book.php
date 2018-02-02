@@ -68,7 +68,7 @@ class Book extends Model
         if (!$string) {
             return $query;
         }
-        return $query->where('name', 'LIKE', "%$string%");
+        return $query->where('name', 'ILIKE', "%" . $string . "%");
     }
 
     /**

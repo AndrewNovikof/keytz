@@ -63,7 +63,7 @@ class CatalogPolicy
      */
     public function display(User $user, Catalog $catalog)
     {
-        if (!$user->hasPermissionTo("display $this->table")) {
+        if (!$user->hasPermissionTo("view $this->table")) {
             return false;
         };
 
@@ -146,6 +146,20 @@ class CatalogPolicy
             return false;
         };
 
+        return true;
+    }
+
+    /**
+     * @param User $user
+     * @param Catalog $catalog
+     *
+     * @return bool
+     */
+    public function edit(User $user, Catalog $catalog)
+    {
+        if (!$user->hasPermissionTo("edit $this->table")) {
+            return false;
+        };
         return true;
     }
 }

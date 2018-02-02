@@ -62,7 +62,7 @@ class UserPolicy
      */
     public function display(User $user, User $model)
     {
-        if (!$user->hasPermissionTo("display $this->table")) {
+        if (!$user->hasPermissionTo("view $this->table")) {
             return false;
         };
 
@@ -113,6 +113,20 @@ class UserPolicy
             return false;
         };
 
+        return true;
+    }
+
+    /**
+     * @param User $user
+     * @param User $model
+     *
+     * @return bool
+     */
+    public function edit(User $user, User $model)
+    {
+        if (!$user->hasPermissionTo("edit $this->table")) {
+            return false;
+        };
         return true;
     }
 }

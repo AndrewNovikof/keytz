@@ -63,7 +63,7 @@ class BookPolicy
      */
     public function display(User $user, Book $book)
     {
-        if (!$user->hasPermissionTo("display $this->table")) {
+        if (!$user->hasPermissionTo("view $this->table")) {
             return false;
         };
 
@@ -114,6 +114,20 @@ class BookPolicy
             return false;
         };
 
+        return true;
+    }
+
+    /**
+     * @param User $user
+     * @param Book $book
+     *
+     * @return bool
+     */
+    public function edit(User $user, Book $book)
+    {
+        if (!$user->hasPermissionTo("edit $this->table")) {
+            return false;
+        };
         return true;
     }
 }

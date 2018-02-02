@@ -63,7 +63,7 @@ class RolePolicy
      */
     public function display(User $user, Role $role)
     {
-        if (!$user->hasPermissionTo("display $this->table")) {
+        if (!$user->hasPermissionTo("view $this->table")) {
             return false;
         };
 
@@ -114,6 +114,20 @@ class RolePolicy
             return false;
         };
 
+        return true;
+    }
+
+    /**
+     * @param User $user
+     * @param Role $role
+     *
+     * @return bool
+     */
+    public function edit(User $user, Role $role)
+    {
+        if (!$user->hasPermissionTo("edit $this->table")) {
+            return false;
+        };
         return true;
     }
 }

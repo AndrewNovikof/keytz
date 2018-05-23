@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Catalog[] $catalogs
  * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book excludedCatalog($catalog_id = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book search($string = null)
  */
 class Book extends Model
 {
